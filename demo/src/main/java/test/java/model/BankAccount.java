@@ -1,13 +1,19 @@
 package test.java.model;
-    
-public class BankAccount {
+
+import java.util.UUID;
+
+public class BankAccount extends Object{
     private String accountId;
     private double balance;
     private String currency;
-    private String status;
+    private AccountStatus status;
+    private String name;
 
     public BankAccount() {
-        status = "CREATED";
+        this.accountId = UUID.randomUUID().toString();
+        this.status = AccountStatus.CREATED;
+        this.balance = 0.0;
+        this.currency = "EUR";
     }
 
     public String getAccountId() {
@@ -28,10 +34,25 @@ public class BankAccount {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
-    public String getStatus() {
+    public AccountStatus getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(AccountStatus status) {
         this.status = status;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+        "accountId='" + accountId + '\'' +
+        ", balance=" + balance +
+        ", currency='" + currency + '\'' +
+        ", status=" + status + 
+        ", name='" + name + '\'' +'}';
     }
 }
