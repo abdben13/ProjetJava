@@ -2,7 +2,7 @@ package test.java.model;
 
 import java.util.UUID;
 
-public class BankAccount extends Object{
+public abstract class BankAccount extends Object{
     private String accountId;
     private double balance;
     private String currency;
@@ -14,6 +14,12 @@ public class BankAccount extends Object{
         this.status = AccountStatus.CREATED;
         this.balance = 0.0;
         this.currency = "EUR";
+    }
+
+    public BankAccount(String currency, double initialBalance){
+        this();
+        this.balance = initialBalance;
+        this.currency = currency;
     }
 
     public String getAccountId() {
@@ -55,4 +61,6 @@ public class BankAccount extends Object{
         ", status=" + status + 
         ", name='" + name + '\'' +'}';
     }
+
+    public abstract String getType();
 }
