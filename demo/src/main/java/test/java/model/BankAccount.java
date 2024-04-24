@@ -63,4 +63,7 @@ public abstract class BankAccount extends Object{
     }
 
     public abstract String getType();
+    public final void print(){
+        System.out.println("-------------BANK----------------");
+    }
 }

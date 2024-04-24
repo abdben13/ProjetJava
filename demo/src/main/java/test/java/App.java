@@ -19,7 +19,6 @@ public class App {
         printAccount(account1);
         printAccount(account2);
         printAccount(account3);
-
     }
     public static void printAccount(BankAccount account) {
         System.out.println("***********************************************");
@@ -40,5 +39,4 @@ public class App {
         System.out.println(account.toString());
         System.out.println("***********************************************");
     }
-    
 }
