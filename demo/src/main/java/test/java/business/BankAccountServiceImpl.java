@@ -16,7 +16,7 @@ public class BankAccountServiceImpl implements BankAccountService{
 
     @Override
     public void addRandomData(int size) {
-        // TODO Auto-generated method stub
+        
         
     }
 
@@ -34,12 +34,16 @@ public class BankAccountServiceImpl implements BankAccountService{
 
     @Override
     public BankAccount getAccountById(String id) {
-        // TODO Auto-generated method stub
-        return null;
+        for(BankAccount bankAccount:bankAccountList){
+            if(bankAccount.getAccountId().equals(id)){
+                return bankAccount;
+            }
+        }
+        throw new RuntimeException("BankAccount not found");
     }
 
     @Override
-    public List<BankAccount> getAllAccount() {
+    public List<BankAccount> getAllAccounts() {
         return bankAccountList;
     }
 

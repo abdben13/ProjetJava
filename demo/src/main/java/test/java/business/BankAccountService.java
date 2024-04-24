@@ -6,7 +6,7 @@ import test.java.model.BankAccount;
 
 public interface BankAccountService {
     BankAccount addBankAccount(BankAccount account);
-    List<BankAccount> getAllAccount();
+    List<BankAccount> getAllAccounts();
     BankAccount getAccountById(String id);
     void addRandomData(int size);
     void credit(String accountId, double amount);
