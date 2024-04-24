@@ -2,7 +2,7 @@ package test.java.model;
 
 import java.util.UUID;
 
-public abstract class BankAccount extends Object{
+public abstract class BankAccount{
     private String accountId;
     private double balance;
     private String currency;
@@ -63,6 +63,7 @@ public abstract class BankAccount extends Object{
     }
 
     public abstract String getType();
+    
     public final void print(){
         System.out.println("-------------BANK----------------");
     }
