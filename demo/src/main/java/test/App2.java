@@ -22,7 +22,7 @@ public class App2 {
         accounts[3]=new SavingAccount("MAD", 5400, 4.3);
         
         for(BankAccount acc:accounts) {
-            System.out.println(acc.getType());
+            System.out.println(acc.getType()); /*polymorphisme */
         }
 
         List<BankAccount> bankAccountList=new ArrayList<>();
@@ -33,6 +33,8 @@ public class App2 {
         for(BankAccount acc:accounts) {
             System.out.println(acc.getBalance());
         }
+
+        
 
         System.out.println("=====================Map=========");
         Map<String, BankAccount> BankAccountMap=new HashMap<>();
