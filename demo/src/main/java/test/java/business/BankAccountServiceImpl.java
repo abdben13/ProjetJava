@@ -3,9 +3,12 @@ package test.java.business;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.security.auth.login.AccountNotFoundException;
 
+import test.java.exceptions.BalanceNotFoundSufficientException;
 import test.java.model.AccountStatus;
 import test.java.model.BankAccount;
 import test.java.model.CurrentAccount;
@@ -40,15 +43,16 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public void credit(String accountId, double amount) {
-        // TODO Auto-generated method stub
-        
+    public void credit(String accountId, double amount) throws AccountNotFoundException {
+        BankAccount accountById = getAccountById(accountId);
+        accountById.setBalance(accountById.getBalance()+amount);
     }
 
     @Override
-    public void debit(String accountId, double amount) {
-        // TODO Auto-generated method stub
-        
+    public void debit(String accountId, double amount) throws AccountNotFoundException, BalanceNotFoundSufficientException {
+        BankAccount accountById = getAccountById(accountId);
+        if(amount>accountById.getBalance()) throw new BalanceNotFoundSufficientException("Balance not sufficient");
+        accountById.setBalance(accountById.getBalance()-amount);
     }
 
     @Override
@@ -58,8 +62,7 @@ public class BankAccountServiceImpl implements BankAccountService{
         .stream()
         .filter(acc->acc.getAccountId().equals(id))
         .findFirst()
-        .orElseThrow(()->new AccountNotFoundException("BankAccount not found"));
-
+        .orElseThrow(()->new AccountNotFoundException(String.format("BankAccount %s not found", id)));
         //Approche imperative
         /*for(BankAccount bankAccount:bankAccountList){
             if(bankAccount.getAccountId().equals(id)){
@@ -75,9 +78,65 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public void transfer(String accountId, String accountDestination, double amount) {
-        // TODO Auto-generated method stub
-        
+    public void transfer(String accountSource, String accountDestination, double amount) throws AccountNotFoundException, BalanceNotFoundSufficientException {
+        debit(accountSource, amount);
+        credit(accountDestination, amount);
     }
+
+    @Override
+    public List<BankAccount> getSavingAccounts() {
+        //Declarative approche
+        List<BankAccount> collect = bankAccountList
+        .stream()
+        .filter(acc->acc instanceof SavingAccount)
+        .collect(Collectors.toList());
+        return collect;
+
+        //Imperative approche
+        /*List<BankAccount> result=new ArrayList<>();
+        for(BankAccount acc:bankAccountList){
+            if(acc.getType().equals("SAVING_ACCOUNT")){
+                result.add(acc);
+            }
+        }
+        return result;*/
+    }
+
+    @Override
+    public List<BankAccount> getCurrentAccounts() {
+        List<BankAccount> collect = bankAccountList
+        .stream()
+        .filter(acc->acc instanceof CurrentAccount)
+        .collect(Collectors.toList());
+        return collect;
+    }
+
+    @Override
+    public double getTotalBalance() {
+        return bankAccountList
+        .stream()
+        .map(account -> account.getBalance())
+        .reduce(0.0, (a,v)->a+v);
+
+        //Imperative approche
+        /*double sum=0;
+        for(BankAccount acc:bankAccountList){
+            sum=sum+acc.getBalance();
+        }
+        return sum;*/
+    }
+
+    @Override
+    public List<BankAccount> searchAccounts(Condition condition) {
+       List<BankAccount> result = new ArrayList<>();
+       for(BankAccount acc:bankAccountList){
+           if(condition.test(acc)){
+               result.add(acc);
+           }
+       }
+    return result;
+    }
+
+    
     
 }
